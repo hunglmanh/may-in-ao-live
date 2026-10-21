@@ -89,6 +89,60 @@ function clearPaper(){
  total=0;
  document.getElementById('count').textContent='QUEUE: 00';
 }
+// Kết nối máy in với máy chủ
+const wsProtocol = location.protocol === "https:" ? "wss:" : "ws:";
+const liveSocket = new WebSocket(wsProtocol + "//" + location.host);
+
+liveSocket.onopen = () => {
+  console.log("Đã kết nối máy in với máy chủ");
+};
+
+liveSocket.onmessage = (event) => {
+  try {
+    const data = JSON.parse(event.data);
+
+    if (data.type === "chat") {
+      const name = data.nickname || data.uniqueId || "Khách";
+      const avatar = data.avatar || "";
+      const comment = data.comment || "";
+
+      const nameInput = document.getElementById("name");
+      const avatarInput = document.getElementById("avatar");
+      const commentInput = document.getElementById("comment");
+
+      if (nameInput && avatarInput && commentInput) {
+        nameInput.value = name;
+        avatarInput.value = avatar;
+        commentInput.value = comment;
+        printAvatar();
+      }
+    }
+
+    if (data.type === "gift") {
+      const name = data.nickname || data.uniqueId || "Khách";
+      const avatar = data.avatar || "";
+      const gift = data.giftName || "Quà tặng";
+      const count = data.repeatCount || 1;
+
+      const nameInput = document.getElementById("name");
+      const avatarInput = document.getElementById("avatar");
+      const commentInput = document.getElementById("comment");
+
+      if (nameInput && avatarInput && commentInput) {
+        nameInput.value = name;
+        avatarInput.value = avatar;
+        commentInput.value = "🎁 " + gift + " x" + count;
+        printAvatar();
+      }
+    }
+  } catch (error) {
+    console.error("Lỗi dữ liệu máy in:", error);
+  }
+};
+
+liveSocket.onclose = () => {
+  console.log("Máy in đã ngắt kết nối");
+};
 </script>
 </body>
 </html>

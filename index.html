@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Máy In Avatar LIVE</title>
+<style>
+body{margin:0;background:#171717;color:#fff;font-family:Arial,sans-serif;text-align:center;padding:16px}
+h2{color:#ffd36a}
+input,textarea,button{box-sizing:border-box;width:100%;padding:12px;margin:6px 0;border-radius:10px;font-size:16px}
+textarea{height:90px}
+button{background:#ffc857;border:0;font-weight:bold}
+.printer{max-width:420px;margin:20px auto;background:#333;padding:16px;border-radius:18px}
+.slot{height:18px;background:#080808;border-radius:10px;margin-bottom:0}
+.paper{background:#fff8df;color:#222;margin:auto;width:85%;min-height:120px;padding:12px;box-sizing:border-box;overflow-wrap:anywhere;font-family:monospace;text-align:left}
+.ticket{border-bottom:1px dashed #777;padding:12px 0;animation:show .5s}
+.ticket img{width:52px;height:52px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:10px}
+@keyframes show{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+small{color:#bbb}
+</style>
+</head>
+<body>
+<h2>🖨️ MÁY IN AVATAR LIVE</h2>
+<p>Máy in tranh giả lập trên iPhone</p>
+<div class="printer">
+  <div class="slot"></div>
+  <div class="paper" id="paper">
+    <b>PHIẾU BÌNH LUẬN LIVE</b>
+    <div id="prints"></div>
+  </div>
+</div>
+<input id="name" placeholder="Tên người xem">
+<input id="avatar" placeholder="Link ảnh avatar (URL)">
+<textarea id="comment" placeholder="Nội dung bình luận"></textarea>
+<button onclick="printAvatar()">🖨️ IN AVATAR</button>
+<button onclick="document.getElementById('prints').innerHTML=''">Xóa giấy</button>
+<small>Bản thử nghiệm: in thủ công bằng dữ liệu mẫu.</small>
+<script>
+function printAvatar(){
+ const name=document.getElementById('name').value.trim()||'Khách LIVE';
+ const avatar=document.getElementById('avatar').value.trim();
+ const comment=document.getElementById('comment').value.trim();
+ const item=document.createElement('div');
+ item.className='ticket';
+ const img=document.createElement('img');
+ img.alt='Avatar';
+ img.src=/^https:\/\/\S+/i.test(avatar)?avatar:'https://placehold.co/100x100?text=LIVE';
+ const title=document.createElement('b');
+ title.textContent=name;
+ const text=document.createElement('p');
+ text.textContent=comment;
+ item.append(img,title,text);
+ document.getElementById('prints').prepend(item);
+ document.getElementById('paper').scrollIntoView({behavior:'smooth',block:'end'});
+}
+</script>
+</body>
+</html>

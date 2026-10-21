@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEO PRINT | LIVE</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#070b12;color:#eaf7ff;font-family:Arial,sans-serif;padding:18px}
+header{text-align:center;padding:14px 0}
+.logo{color:#51e5ff;font-size:12px;letter-spacing:5px}
+h1{font-size:24px;margin:8px 0}
+.sub{font-size:12px;color:#8395aa}
+.panel{max-width:480px;margin:auto}
+.status{display:flex;justify-content:space-between;border:1px solid #19394a;border-radius:12px;padding:12px;color:#58f3c1;font-size:11px;letter-spacing:2px}
+.machine{margin:22px 0;background:linear-gradient(145deg,#303a48,#101720 55%,#263241);padding:16px;border:1px solid #4a6276;border-radius:20px;box-shadow:0 18px 35px #0009}
+.rail{height:18px;border-radius:8px;background:linear-gradient(#aebdca,#344351,#10151d);position:relative;margin-bottom:8px}
+.head{width:56px;height:35px;position:absolute;top:-10px;left:42%;background:linear-gradient(135deg,#dce6ee,#475666 50%,#111923);border:1px solid #a6b5c3;border-radius:7px;box-shadow:0 5px 12px #0008;animation:scan 3s ease-in-out infinite alternate}
+.head:after{content:"";position:absolute;bottom:3px;left:20px;width:14px;height:4px;background:#51e5ff;box-shadow:0 0 10px #51e5ff}
+@keyframes scan{from{left:8%}to{left:78%}}
+.paper{background:#f5f0df;color:#222;margin:auto;width:92%;min-height:220px;padding:15px 12px;box-shadow:0 4px 12px #0008;font-family:monospace}
+.paperhead{text-align:center;border-bottom:1px dashed #888;padding-bottom:10px;font-weight:bold;font-size:12px}
+.printed{display:flex;gap:10px;align-items:center;border-bottom:1px dashed #aaa;padding:12px 0;animation:appear .6s ease}
+.printed img{width:55px;height:55px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 0 0 1px #888}
+.printed b{font-size:13px;overflow-wrap:anywhere}
+.printed p{font-size:11px;margin:5px 0 0;overflow-wrap:anywhere}
+@keyframes appear{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+.controls{background:#0e1622;border:1px solid #213548;border-radius:16px;padding:15px}
+label{font-size:12px;color:#9eb5c8}
+input,textarea{display:block;width:100%;margin:7px 0 13px;padding:12px;border-radius:9px;border:1px solid #29475b;background:#080e17;color:white;font-size:15px}
+textarea{height:75px}
+button{width:100%;padding:13px;border:0;border-radius:9px;background:#43d9f4;color:#07121b;font-weight:bold;font-size:14px;margin:5px 0}
+button.secondary{background:#1c2c3b;color:#c7e9f7;border:1px solid #345268}
+.foot{text-align:center;color:#70869b;font-size:10px;margin:18px 0}
+</style>
+</head>
+<body>
+<div class="panel">
+<header>
+<div class="logo">NEXT GENERATION PRINT SYSTEM</div>
+<h1>NEO PRINT <span style="color:#51e5ff">LIVE</span></h1>
+<div class="sub">VIRTUAL THERMAL PRINTER · v1.0</div>
+</header>
+<div class="status"><span>● SYSTEM READY</span><span id="count">QUEUE: 00</span></div>
+<div class="machine">
+<div class="rail"><div class="head"></div></div>
+<div class="paper">
+<div class="paperhead">NEO PRINT / LIVE MOMENTS<br><small>AVATAR PRINT RECEIPT</small></div>
+<div id="prints"></div>
+</div>
+</div>
+<div class="controls">
+<label>TÊN NGƯỜI XEM</label>
+<input id="name" placeholder="Ví dụ: Hung Nguyen">
+<label>ĐƯỜNG DẪN ẢNH AVATAR</label>
+<input id="avatar" placeholder="https://...">
+<label>BÌNH LUẬN</label>
+<textarea id="comment" placeholder="Nội dung bình luận..."></textarea>
+<button onclick="printAvatar()">▶ BẮT ĐẦU IN</button>
+<button class="secondary" onclick="clearPaper()">XÓA GIẤY / RESET</button>
+</div>
+<div class="foot">DEMO MODE · CHƯA KẾT NỐI TIKTOK LIVE</div>
+</div>
+<script>
+let total=0;
+function printAvatar(){
+ const name=document.getElementById('name').value.trim()||'LIVE GUEST';
+ const url=document.getElementById('avatar').value.trim();
+ const comment=document.getElementById('comment').value.trim()||'Thanks for joining the LIVE!';
+ const item=document.createElement('div');
+ item.className='printed';
+ const img=document.createElement('img');
+ img.alt='Avatar';
+ img.src=/^https:\/\/\S+/i.test(url)?url:'https://placehold.co/100x100/182b3b/51e5ff?text=LIVE';
+ const info=document.createElement('div');
+ const title=document.createElement('b');
+ title.textContent=name;
+ const text=document.createElement('p');
+ text.textContent=comment;
+ info.append(title,text);
+ item.append(img,info);
+ document.getElementById('prints').prepend(item);
+ total++;
+ document.getElementById('count').textContent='QUEUE: '+String(total).padStart(2,'0');
+}
+function clearPaper(){
+ document.getElementById('prints').innerHTML='';
+ total=0;
+ document.getElementById('count').textContent='QUEUE: 00';
+}
+</script>
+</body>
+</html>

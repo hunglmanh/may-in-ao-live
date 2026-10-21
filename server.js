@@ -31,7 +31,7 @@ const username = (
   process.env.TIKTOK_USERNAME || "hehevuimaban"
 ).replace(/^@/, "");
 
-const connection = new TikTokLiveConnection(username);
+const connection = new TikTokLiveConnection(username, {});
 
 connection.on(WebcastEvent.CHAT, (data) => {
   broadcast({
